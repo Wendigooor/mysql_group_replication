@@ -1,0 +1,1 @@
+# mysql_group_replication
