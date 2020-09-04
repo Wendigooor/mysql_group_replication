@@ -1,0 +1,75 @@
+[mysqld]
+
+max_binlog_size = 4096
+
+# Can be used via Mysql Workbench/SequelPro
+default_authentication_plugin     = mysql_native_password
+
+# Binary log file name (for data recovery after possible mysql server crash).
+log_bin                           = mysql-bin-1.log
+
+# The MySQL Server system variables described in this section are used to monitor and control Global Transaction Identifiers (GTIDs).
+enforce_gtid_consistency          = ON
+
+# Controls whether GTID based logging is enabled and what type of transactions the logs can contain/
+# enforce_gtid_consistency must be true before you can set gtid_mode=ON.
+gtid_mode                         = ON
+
+# Whether updates received by a replica from a replication source server should be logged to the replica's own binary log.
+log_slave_updates                 = ON
+
+# When binlog_checksum is disabled (value NONE),
+# the server verifies that it is writing only complete events to the binary log
+# by writing and checking the event length (rather than a checksum) for each event.
+binlog_checksum                   = NONE
+
+# The setting of this variable determines whether the replica records source metadata, consisting of status and connection information,
+# to an InnoDB table in the mysql system database, or to a file in the data directory.
+# default value - TABLE
+master_info_repository            = TABLE
+
+# The setting of this variable determines whether the replica server logs its position in the relay logs
+# to an InnoDB table in the mysql system database, or to a file in the data directory.
+# default value - TABLE
+relay_log_info_repository         = TABLE
+
+# This option tells the server to load the named plugins at startup.
+# In our case this is group_replication plugin
+plugin-load-add                   = group_replication.so
+
+# Load this plugin in case when server bin logs are too far away / removed.
+# So group replication makes a clone of the current master (dump) and continue replication as default.
+plugin-load-add                   = mysql_clone.so
+
+# If enabled, this variable enables automatic relay log recovery immediately following server startup.
+# The recovery process creates a new relay log file, initializes the SQL thread position to this new relay log,
+# and initializes the I/O thread to the SQL thread position.
+relay_log_recovery                = ON
+
+# For Group Replication, transaction_write_set_extraction must be set to XXHASH64.
+# The process of extracting the writes from a transaction is used in Group Replication
+# for conflict detection and certification on all group members.
+transaction_write_set_extraction  = XXHASH64
+
+# Whether the server should start Group Replication or not during server start.
+loose_group_replication_start_on_boot                    = OFF
+
+# The name of the group which this server instance belongs to.
+# Must be a valid and _uniq_ UUID.
+# This UUID is used internally when setting GTIDs for Group Replication events in the binary log.
+loose_group_replication_group_name                       = aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
+
+# A list of group members to which a joining member can connect to obtain details of all the current group members.
+# The joining member uses these details to select and connect to a group member to obtain the data needed for synchrony with the group.
+# The list consists of the seed member's network addresses specified as a comma separated list, such as host1:port1,host2:port2.
+loose_group_replication_group_seeds                      = alpha:6606,beta:6606,gamma:6606
+
+# Instructs the group to automatically pick a single server to be the one that handles read/write workload.
+# This server is the PRIMARY and all others are SECONDARIES.
+loose_group_replication_single_primary_mode              = ON
+
+# Enables or disables strict consistency checks for multi-primary update everywhere.
+# The default is that checks are disabled. In single-primary mode, this option must be disabled on all group members.
+loose_group_replication_enforce_update_everywhere_checks = OFF
+
+

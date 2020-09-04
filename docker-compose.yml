@@ -1,0 +1,69 @@
+version: '3.5'
+
+services:
+
+  alpha:
+    image: mysql/mysql-server:8.0
+    container_name: alpha
+    hostname: alpha
+    ports:
+      - '1441:3306'
+    restart: unless-stopped
+    # sets the network address which the member provides for connections from other members, specified as a host:port formatted string.
+    command: [ "mysqld", "--loose-group-replication-local-address=alpha:6606" ]
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: lpg
+    volumes:
+      - ./configs/my-cnf:/etc/mysql/my.cnf
+      - ./scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+      interval: 2s
+      retries: 20
+
+  beta:
+    image: mysql/mysql-server:8.0
+    container_name: beta
+    hostname: beta
+    ports:
+      - '1442:3306'
+    restart: unless-stopped
+    # sets the network address which the member provides for connections from other members, specified as a host:port formatted string.
+    command: [ "mysqld", "--loose-group-replication-local-address=beta:6606" ]
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: lpg
+    volumes:
+      - ./configs/my-cnf:/etc/mysql/my.cnf
+      - ./scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+      interval: 2s
+      retries: 20
+
+  gamma:
+    image: mysql/mysql-server:8.0
+    container_name: gamma
+    hostname: gamma
+    ports:
+      - '1443:3306'
+    restart: unless-stopped
+    # sets the network address which the member provides for connections from other members, specified as a host:port formatted string.
+    command: [ "mysqld", "--loose-group-replication-local-address=gamma:6606" ]
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: lpg
+    volumes:
+      - ./configs/my-cnf:/etc/mysql/my.cnf
+      - ./scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+      interval: 2s
+      retries: 20
