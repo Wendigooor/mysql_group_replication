@@ -1,6 +1,11 @@
 [mysqld]
 
-max_binlog_size = 4096
+# For possible testing clone plugin 'mysql_clone.so'
+# You can set binlog file size and before the adding new slave remove binlogs (check 'PURGE BINARY LOGS' operation) 
+# to be sure that the slave replication process will make the latest dump of the master
+# and continue working as expected
+#
+# max_binlog_size = 4096
 
 # Can be used via Mysql Workbench/SequelPro
 default_authentication_plugin     = mysql_native_password
