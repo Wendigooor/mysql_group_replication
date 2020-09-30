@@ -24,8 +24,11 @@ Which call next commands:
     change master to master_user='root' for channel 'group_replication_recovery';
     START GROUP_REPLICATION;
 
-> SELECT * FROM performance_schema.replication_group_members;
-command should return next result:
+and the next command
+
+    SELECT * FROM performance_schema.replication_group_members;
+
+should return next result:
 
     group_replication_applier	74f3c403-f3fe-11ea-a955-0242ac130003	alpha	3306	ONLINE	PRIMARY	8.0.21
 
@@ -39,8 +42,11 @@ Which call next commands:
     START GROUP_REPLICATION;
     SET @@global.read_only=1;
 
-> SELECT * FROM performance_schema.replication_group_members;
-command should return next result:
+and the next command
+
+    SELECT * FROM performance_schema.replication_group_members;
+
+should return next result:
 
     group_replication_applier	74f3c403-f3fe-11ea-a955-0242ac130003	alpha	3306	ONLINE	PRIMARY	8.0.21
     group_replication_applier	7500e656-f3fe-11ea-8b39-0242ac130002	beta	3306	ONLINE	SECONDARY	8.0.21
